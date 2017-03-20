@@ -6,3 +6,5 @@
 /packages/MySql.Data.6.9.9/content/web.config.transform
 /packages/MySql.Data.6.9.9/lib/net40/MySql.Data.dll
 /packages/MySql.Data.6.9.9/lib/net45/MySql.Data.dll
+bin
+obj
