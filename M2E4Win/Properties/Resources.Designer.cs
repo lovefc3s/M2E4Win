@@ -97,6 +97,35 @@ namespace M2E4Win.Properties {
         }
         
         /// <summary>
+        ///   &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;configuration&gt;
+        ///  &lt;configSections&gt;
+        ///    &lt;!-- For more information on Entity Framework configuration, visit http://go.microsoft.com/fwlink/?LinkID=237468 --&gt;
+        ///    &lt;section name=&quot;entityFramework&quot; type=&quot;System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot; requirePermission=&quot;false&quot;/&gt;
+        ///  &lt;/configSections&gt;
+        ///  &lt;startup&gt;
+        ///    &lt;supportedRuntime version=&quot;v4.0&quot; sku=&quot;.NETFramework,Version=v4.5 [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string configxml1 {
+            get {
+                return ResourceManager.GetString("configxml1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   
+        ///    providerName=&quot;MySql.Data.MySqlClient&quot; /&gt;
+        ///  &lt;/connectionStrings&gt;
+        ///&lt;/configuration&gt;
+        /// に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string configxml2 {
+            get {
+                return ResourceManager.GetString("configxml2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   \ に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string DirSp {

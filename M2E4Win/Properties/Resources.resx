@@ -129,6 +129,10 @@
   <data name="Config3" xml:space="preserve">
     <value />
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="configxml1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>configxml1.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;shift_jis</value>
+  </data>
   <data name="DirSp" xml:space="preserve">
     <value>\</value>
   </data>
@@ -149,5 +153,8 @@
   </data>
   <data name="SB" xml:space="preserve">
     <value>{</value>
+  </data>
+  <data name="configxml2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>configxml2.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;shift_jis</value>
   </data>
 </root>

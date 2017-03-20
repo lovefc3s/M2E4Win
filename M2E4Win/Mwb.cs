@@ -240,16 +240,16 @@ namespace M2E4Win
 			savename = savename.Substring(0, savename.LastIndexOf(Resources.DirSp));
 			savename = savename + Resources.DirSp + "RreadmeAppconfig.txt";
 			wrt = File.CreateText(savename);
-			wrt.Write(Resources.Config1);
-			wrt.Write("\"" + tit + "ConnectionS\" ");
-			wrt.Write(Resources.Config2);
+			wrt.Write(Resources.configxml1);
+			wrt.Write(tit + "ConnectionS\" connectionString=");
+			//wrt.Write(Resources.Config2);
 			MySql.Data.MySqlClient.MySqlConnectionStringBuilder bld = new MySql.Data.MySqlClient.MySqlConnectionStringBuilder();
 			bld.Server = Server;
 			bld.UserID = UserID;
 			bld.Password = Password;
 			bld.Database = Database;
-			wrt.Write("\"" + bld.ConnectionString + "\" ");
-			wrt.Write(Resources.Config3);
+			wrt.Write("\"" + bld.ConnectionString + "\"");
+			wrt.Write(Resources.configxml2);
 			wrt.Close();
 			return ret;
 		}
