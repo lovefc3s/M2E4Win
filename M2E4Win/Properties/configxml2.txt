@@ -1,0 +1,4 @@
+
+    providerName="MySql.Data.MySqlClient" />
+  </connectionStrings>
+</configuration>
