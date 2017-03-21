@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace M2E4Win
 {
-	class MyColumn
+	public partial class MyColumn
 	{
 		public MyColumn() {
 			id = 0;
@@ -32,7 +32,7 @@ namespace M2E4Win
 		public string SimpleDatatype { get; set; }
 		public string linkid { get; set; }
 	}
-	class MyTable
+	public partial class MyTable
 	{
 		public MyTable() {
 			Columns = new List<MyColumn>();
@@ -124,5 +124,22 @@ namespace M2E4Win
 		public string referencedColumn { get; set; }
 		public string name { get; set; }
 		public string owner { get; set; }
+	}
+	public partial class MyView : MyTable
+	{
+		public MyView():base(){
+		}
+		public int algorithm { get; set; }
+		public int isReadOnly { get; set; }
+		public string oldModelSqlDefinition { get; set; }
+		public string oldServerSqlDefinition { get; set; }
+		public int withCheckCondition { get; set; }
+		public string definer { get; set; }
+		public string sqlBody { get; set; }
+		public int commentedOut { get; set; }
+		public DateTime createDate { get; set; }
+		public DateTime lastChangeDate { get; set; }
+		public int modelOnly { get; set; }
+		public string oldName { get; set; }
 	}
 }

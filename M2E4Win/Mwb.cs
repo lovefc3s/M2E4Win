@@ -25,9 +25,11 @@ namespace M2E4Win
 		public string Database { get; set; }
 		public string Name { get; set; }
 		private MyTable _table = null;
+		private MyView _view = null;
 		private MyColumn _column = null;
 		private List<MyColumn> Columns;
 		private List<MyTable> Tables;
+		private List<MyView> Views;
 		private bool dbe = false;
 		private int clevel = 0;
 		private List<MyUserDatatype> Usertype;
@@ -46,6 +48,7 @@ namespace M2E4Win
 			nl = Environment.NewLine;
 			Columns = new List<MyColumn>();
 			Tables = new List<MyTable>();
+			Views = new List<MyView>();
 			Usertype = new List<MyUserDatatype>();
 			MyUserDatatype typ = new MyUserDatatype();
 			Usertype.Add(typ);
@@ -356,9 +359,8 @@ namespace M2E4Win
 			{
 				foreach (XmlAttribute atr in nod.Attributes)
 				{
-					if ((atr.Name == "struct-name") && (atr.Value == "db.mysql.Table"))
-					{
-						if (_table != null){
+					if ((atr.Name == "struct-name") && (atr.Value == "db.mysql.Table")) {
+						if (_table != null) {
 							Tables.Add(_table);
 						}
 						_table = new MyTable();
@@ -536,6 +538,36 @@ namespace M2E4Win
 										else if (val == "descend") col.descend = int.Parse(ele4.Value);
 										else if (val == "referencedColumn") col.referencedColumn = ele4.Value;
 										else if (val == "owner") col.owner = ele4.Value;
+									}
+								}
+							}
+						}
+					}
+					else if ((ere.Name == "value")&&((nam.ToString() == "struct-name") && (atr.Value == "db.mysql.View"))) {
+						MyView view = new MyView();
+						Views.Add(view);
+						view.id = Views.Count;
+						if (view != null) {
+							IEnumerable<XElement> els = ere.Elements();
+							if (els != null) {
+								foreach (XElement ele4 in els) {
+									if (ele4.HasAttributes) {
+										XAttribute atr3 = ele4.Attribute(XName.Get("key"));
+										string val = "";
+										if (atr3 != null) val = atr3.Value;
+										if (val == "name") view.name = ele4.Value;
+										else if (val == "algorithm") view.algorithm = int.Parse(ele4.Value);
+										else if (val == "isReadOnly") view.isReadOnly = int.Parse(ele4.Value);
+										else if (val == "oldModelSqlDefinition") view.oldModelSqlDefinition = ele4.Value;
+										else if (val == "oldServerSqlDefinition") view.oldServerSqlDefinition = ele4.Value;
+										else if (val == "withCheckCondition") view.withCheckCondition = int.Parse(ele4.Value);
+										else if (val == "definer") view.definer = ele4.Value;
+										else if (val == "sqlBody") view.sqlBody = ele4.Value;
+										else if (val == "commentedOut") view.commentedOut = int.Parse(ele4.Value);
+										else if (val == "createDate") view.createDate = DateTime.Parse(ele4.Value);
+										else if (val == "lastChangeDate") view.lastChangeDate = DateTime.Parse(ele4.Value);
+										else if (val == "modelOnly") view.modelOnly = int.Parse(ele4.Value);
+										else if (val == "oldName") view.oldName = ele4.Value;
 									}
 								}
 							}
