@@ -105,6 +105,84 @@ namespace M2E4Win
 			if (ere1.HasElements == true) {
 				NodeProcess2(ere1, 1);
 			}
+			setViews();
+			return ret;
+		}
+		private void setViews() {
+			foreach (MyView view in Views) {
+				string sql = view.sqlBody;
+				view.Columns.Clear();
+				int i = 0;
+				string wk = sql;
+				i = wk.IndexOf("select ");
+				if (i < 0) {
+					i = wk.IndexOf("Select ");
+				}
+				if (i < 0) {
+					i = wk.IndexOf("SELECT ");
+				}
+				if (i > -1)  i = i + 7;  else break;
+				int j = wk.IndexOf("from ");
+				if (j < 0) {
+					j = wk.IndexOf("From ");
+				}
+				if (j < 0) {
+					j = wk.IndexOf("FROM ");
+				}
+				if (j < 0) break;
+				wk = wk.Substring(i, j-7);
+				//  set Columns 
+				while (sql.Length > i) {
+					j = wk.IndexOf(',');
+					int l = j - 1;
+					string token = "";
+					if (j > -1) token = wk.Substring(0, l);
+					else token = wk;
+					if (wk.Length <= token.Length + 2) {
+						i = sql.Length + 1;
+					} else {
+						wk = wk.Substring(token.Length + 2);
+					}
+					token = token.Replace("`", "");
+					int spt = token.IndexOf("AS");
+					if (spt < -1) break;
+					MyColumn col = new MyColumn();
+					col.id = view.Columns.Count + 1;
+					col.name = token.Substring(spt + 3);
+					string tbl = token.Substring(0, token.LastIndexOf("."));
+					tbl.Replace("`", "");
+					if (tbl.LastIndexOf(".") > -1) tbl = tbl.Substring(tbl.LastIndexOf(".") + 1,tbl.Length- tbl.LastIndexOf(".")-1);
+					MyTable stb = getTable(tbl);
+					if (stb != null) {
+						col.tablelink = stb.link;
+						MyColumn rcl = getTableColumn(stb, col.name);
+						if (rcl != null) {
+							col.linkid = rcl.linkid;
+						}
+					}
+					view.Columns.Add(col);
+					i = i + l;
+				}
+			}
+		}
+		private MyColumn getTableColumn(MyTable tbl, string colname) {
+			MyColumn ret = null;
+			foreach (MyColumn col in tbl.Columns) {
+				if (col.name == colname) {
+					ret = col;
+					break;
+				}
+			}
+			return ret;
+		}
+		private MyTable getTable(string tblname) {
+			MyTable ret = null;
+			foreach (MyTable tbl in Tables) {
+				if (tbl.name == tblname) {
+					ret = tbl;
+					break;
+				}
+			}
 			return ret;
 		}
 		//

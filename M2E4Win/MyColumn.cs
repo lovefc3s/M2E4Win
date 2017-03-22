@@ -31,6 +31,7 @@ namespace M2E4Win
 		public string oldName { get; set; }
 		public string SimpleDatatype { get; set; }
 		public string linkid { get; set; }
+		public string tablelink { get; set; }
 	}
 	public partial class MyTable
 	{
@@ -128,6 +129,7 @@ namespace M2E4Win
 	public partial class MyView : MyTable
 	{
 		public MyView():base(){
+			Tables = new List<MyTable>();
 		}
 		public int algorithm { get; set; }
 		public int isReadOnly { get; set; }
@@ -141,5 +143,6 @@ namespace M2E4Win
 		public DateTime lastChangeDate { get; set; }
 		public int modelOnly { get; set; }
 		public string oldName { get; set; }
+		public List<MyTable> Tables { get; set; }
 	}
 }
