@@ -110,7 +110,8 @@ namespace M2E4Win
 		}
 		private void setViews() {
 			foreach (MyView view in Views) {
-				string sql = view.sqlBody;
+				int count = 0;
+				string sql = view.sqlDefinition;
 				view.Columns.Clear();
 				int i = 0;
 				string wk = sql;
@@ -130,7 +131,7 @@ namespace M2E4Win
 					j = wk.IndexOf("FROM ");
 				}
 				if (j < 0) break;
-				wk = wk.Substring(i, j-7);
+				wk = wk.Substring(i, wk.Length-(j-7));
 				//  set Columns 
 				while (sql.Length > i) {
 					j = wk.IndexOf(',');
@@ -144,11 +145,14 @@ namespace M2E4Win
 						wk = wk.Substring(token.Length + 2);
 					}
 					token = token.Replace("`", "");
-					int spt = token.IndexOf("AS");
-					if (spt < -1) break;
+					count++;
 					MyColumn col = new MyColumn();
 					col.id = view.Columns.Count + 1;
-					col.name = token.Substring(spt + 3);
+					int spt = token.IndexOf("AS");
+					if (spt > -1)
+						col.name = token.Substring(spt + 3);
+					else
+						col.name = "Column" + count.ToString("000");
 					string tbl = token.Substring(0, token.LastIndexOf("."));
 					tbl.Replace("`", "");
 					if (tbl.LastIndexOf(".") > -1) tbl = tbl.Substring(tbl.LastIndexOf(".") + 1,tbl.Length- tbl.LastIndexOf(".")-1);
@@ -641,6 +645,7 @@ namespace M2E4Win
 										else if (val == "withCheckCondition") view.withCheckCondition = int.Parse(ele4.Value);
 										else if (val == "definer") view.definer = ele4.Value;
 										else if (val == "sqlBody") view.sqlBody = ele4.Value;
+										else if (val == "sqlDefinition") view.sqlDefinition = ele4.Value;
 										else if (val == "commentedOut") view.commentedOut = int.Parse(ele4.Value);
 										else if (val == "createDate") view.createDate = DateTime.Parse(ele4.Value);
 										else if (val == "lastChangeDate") view.lastChangeDate = DateTime.Parse(ele4.Value);

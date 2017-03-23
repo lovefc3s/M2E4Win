@@ -138,6 +138,7 @@ namespace M2E4Win
 		public int withCheckCondition { get; set; }
 		public string definer { get; set; }
 		public string sqlBody { get; set; }
+		public string sqlDefinition { get; set; }
 		public int commentedOut { get; set; }
 		public DateTime createDate { get; set; }
 		public DateTime lastChangeDate { get; set; }
