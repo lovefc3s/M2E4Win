@@ -136,6 +136,10 @@ namespace M2E4Win
 				while (sql.Length > i) {
 					j = wk.IndexOf(',');
 					int l = j - 1;
+					if (l < 0) {
+						i = sql.Length + 1;
+						break;
+					}
 					string token = "";
 					if (j > -1) token = wk.Substring(0, l);
 					else token = wk;
@@ -153,8 +157,12 @@ namespace M2E4Win
 						col.name = token.Substring(spt + 3);
 					else
 						col.name = "Column" + count.ToString("000");
-					string tbl = token.Substring(0, token.LastIndexOf("."));
-					tbl.Replace("`", "");
+					int itbl = token.LastIndexOf(".");
+					string tbl = "";
+					if (itbl > -1) {
+						col.name = token.Substring(itbl+1);
+						tbl = token.Substring(0, itbl);
+					}
 					if (tbl.LastIndexOf(".") > -1) tbl = tbl.Substring(tbl.LastIndexOf(".") + 1,tbl.Length- tbl.LastIndexOf(".")-1);
 					MyTable stb = getTable(tbl);
 					if (stb != null) {
@@ -312,8 +320,10 @@ namespace M2E4Win
 				+ tab + tab + "public " + tit + "CreateDatabaseIfNotExists() :base() {" + nl
 				+ tab + tab + Resources.EB + nl
 				+ tab + tab + "protected override void Seed(" + tit + " context) {" + nl
-				+ tab + tab + tab + "base.Seed(context);" + nl
-				+ tab + tab + Resources.EB + nl
+				+ tab + tab + tab + "base.Seed(context);" + nl;
+			foreach (MyView view in Views) {
+			}
+			ret = ret + tab + tab + Resources.EB + nl
 				+ tab + Resources.EB + nl
 				+ Resources.EB + nl;
 			string savename = Filename;
