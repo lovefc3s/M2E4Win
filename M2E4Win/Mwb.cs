@@ -39,8 +39,13 @@ namespace M2E4Win
 		private string nl;
 		private string tit;
 		private static string bd = "\"";
+		private static string execute = "context.Database.ExecuteSqlCommand";
+		private string lp = "(";
+		private string rp = ")";
+		private string sc = ";";
 		private string prop = " { get; set; }";
 		private string _init = "_Initialization_()";
+
 		public Mwb () {
 			_table = null;
 			_column = null;
@@ -61,6 +66,7 @@ namespace M2E4Win
 			Indexes = new List<MyIndex>();
 			tit = "";
 			Database = "";
+			
 		}
 		public bool Load(string filename = "") {
 			bool ret = false;
@@ -322,8 +328,30 @@ namespace M2E4Win
 				+ tab + tab + "protected override void Seed(" + tit + " context) {" + nl
 				+ tab + tab + tab + "base.Seed(context);" + nl;
 			foreach (MyView view in Views) {
+				ret = ret + tab + tab + tab + execute + lp + bd + view.sqlDefinition + bd + rp + sc + nl;
+			}
+			foreach (MyRoutine rtn in Routines) {
+				ret = ret + tab + tab + tab + execute + lp + bd + rtn.sqlDefinition + bd + rp + sc + nl;
 			}
 			ret = ret + tab + tab + Resources.EB + nl
+				+ tab + Resources.EB + nl;
+			ret = ret + tab + "internal sealed class " + tit + "MigrationsConfigration : DbMigrationsConfiguration <" + tit + "DB> {" + nl
+				+ tab + tab + "public " + tit + "MigrationsConfigration() {" + nl
+				+ tab + tab + tab + "AutomaticMigrationsEnabled = true;" + nl
+				+ tab + tab + tab + "AutomaticMigrationDataLossAllowed = true;" + nl
+				+ tab + tab + Resources.EB + nl
+				+ tab + tab + "protected override void Seed(" + tit + "DB context) {" + nl;
+			foreach (MyView view in Views) {
+				ret = ret + tab + tab + tab + execute + lp + nl;
+				ret = ret + SqlFormat(view.sqlDefinition,4) + tab + tab + tab + rp + sc + nl;
+			}
+			foreach (MyRoutine rtn in Routines) {
+				//ret = ret + tab + tab + tab + execute + lp + bd + rtn.sqlDefinition + bd + rp + sc + nl;
+				ret = ret + tab + tab + tab + execute + lp + nl;
+				ret = ret + SqlFormat(rtn.sqlDefinition, 4) + tab + tab + tab + rp + sc + nl;
+			}
+			ret = ret + tab + tab + tab + "base.Seed(context);" + nl
+				+ tab + tab + Resources.EB + nl
 				+ tab + Resources.EB + nl
 				+ Resources.EB + nl;
 			string savename = Filename;
@@ -443,6 +471,33 @@ namespace M2E4Win
 			}
 			return ret;
 		}
+		//	
+		//	SQL 文字列　整形
+		//  
+		private string SqlFormat(string sql ,int tc=0) {
+			string ret =  "";
+			string wk = sql;
+			wk = wk.Replace("\r\n", "\n");
+			int count = 0; 
+			while (wk.Length > 0) {
+				string line = "";
+				int index = wk.IndexOf("\n");
+				if (index < 0) {
+					line = wk;
+					wk = "";
+				} else {
+					line = wk.Substring(0,index);
+					wk = wk.Substring(index+1);
+				}
+				for (int i = 0; i < tc; i++) {
+					ret = ret + tab;
+				}
+				if (count > 0) ret = ret + "+ ";
+				ret = ret + bd + line + bd + nl;
+				count++;
+			}
+			return ret;
+		}
 		//
 		//	ノードの再帰的処理１
 		//
@@ -558,6 +613,7 @@ namespace M2E4Win
 									if (atr2 != null) val = atr2.Value;
 									if (val == "name") rot.name = ere3.Value;
 									else if (val == "sqlBody") rot.sqlBody = ere3.Value;
+									else if (val == "sqlDefinition") rot.sqlDefinition = ere3.Value;
 								}
 							}
 						}
