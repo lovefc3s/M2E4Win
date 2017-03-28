@@ -86,6 +86,7 @@ namespace M2E4Win
 		public int id { get; set; }
 		public string name { get; set; }
 		public string sqlBody { get; set; }
+		public string sqlDefinition { get; set; }
 		public List<MyRoutineParam> Params { get; set; }
 	}
 	public partial class MyUserDatatype
