@@ -204,7 +204,7 @@ namespace M2E4Win
 			return ret;
 		}
 		//
-		//	Entity Code Gen
+		//	Entity Code Generator
 		//
 		public string GetSourceCode(){
 			tit = Filename;
@@ -213,8 +213,9 @@ namespace M2E4Win
 				+ Resources.Header2 + nl
 				+ Resources.Header3 + nl
 				+ Resources.Header4 + nl;
-			ret = ret + Resources.ComSp + tab +tit + ".cs" + nl + nl;
-			ret = ret + "NameSpace " + Name + Resources.SB + nl
+			ret = ret + Resources.ComSp + tab + tit + ".cs" + nl;
+			ret = ret + Resources.USING;
+			ret = ret + "namespace " + Name + Resources.SB + nl
 				+ tab + "[DbConfigurationType(typeof(MySqlEFConfiguration))]" + nl
 				+ tab + "public partial class " + tit + "DB : DbContext {" + nl
 				+ tab + tab + "public " + tit + "DB() : base(" + bd + "name=" + tit + "ConnectionS" + bd + ") {" + nl
@@ -322,16 +323,18 @@ namespace M2E4Win
 				}
 				ret = ret + tab + Resources.EB + nl;
 			}
-			ret = ret + tab + "public partial class " + tit + "CreateDatabaseIfNotExists : CreateDatabaseIfNotExists<" + tit + "> {" + nl
+			ret = ret + tab + "public partial class " + tit + "CreateDatabaseIfNotExists : CreateDatabaseIfNotExists<" + tit + "DB> {" + nl
 				+ tab + tab + "public " + tit + "CreateDatabaseIfNotExists() :base() {" + nl
 				+ tab + tab + Resources.EB + nl
-				+ tab + tab + "protected override void Seed(" + tit + " context) {" + nl
+				+ tab + tab + "protected override void Seed(" + tit + "DB context) {" + nl
 				+ tab + tab + tab + "base.Seed(context);" + nl;
 			foreach (MyView view in Views) {
-				ret = ret + tab + tab + tab + execute + lp + bd + view.sqlDefinition + bd + rp + sc + nl;
+				ret = ret + tab + tab + tab + execute + lp + nl;
+				ret = ret + SqlFormat(view.sqlDefinition,4) + tab + tab + tab + tab + rp + sc + nl;
 			}
 			foreach (MyRoutine rtn in Routines) {
-				ret = ret + tab + tab + tab + execute + lp + bd + rtn.sqlDefinition + bd + rp + sc + nl;
+				ret = ret + tab + tab + tab + execute + lp + nl;
+				ret = ret + SqlFormat(rtn.sqlDefinition, 4) + tab + tab + tab + tab + rp + sc + nl;
 			}
 			ret = ret + tab + tab + Resources.EB + nl
 				+ tab + Resources.EB + nl;
@@ -342,15 +345,22 @@ namespace M2E4Win
 				+ tab + tab + Resources.EB + nl
 				+ tab + tab + "protected override void Seed(" + tit + "DB context) {" + nl;
 			foreach (MyView view in Views) {
+				ret = ret + tab + tab + tab + execute + lp + "\"drop table if exists `" + view.name + "`;\"" + rp + sc + nl;
+				ret = ret + tab + tab + tab + execute + lp + "\"drop view if exists `" + view.name + "`;\"" + rp + sc + nl;
 				ret = ret + tab + tab + tab + execute + lp + nl;
-				ret = ret + SqlFormat(view.sqlDefinition,4) + tab + tab + tab + rp + sc + nl;
+				ret = ret + SqlFormat(view.sqlDefinition,4) + tab + tab + tab + tab + rp + sc + nl;
 			}
 			foreach (MyRoutine rtn in Routines) {
-				//ret = ret + tab + tab + tab + execute + lp + bd + rtn.sqlDefinition + bd + rp + sc + nl;
+				ret = ret + tab + tab + tab + execute + lp + "\"drop PROCEDURE if exists `" + rtn.name + "`;\"" + rp + sc + nl;
 				ret = ret + tab + tab + tab + execute + lp + nl;
-				ret = ret + SqlFormat(rtn.sqlDefinition, 4) + tab + tab + tab + rp + sc + nl;
+				ret = ret + SqlFormat(rtn.sqlDefinition, 4) + tab + tab + tab + tab + rp + sc + nl;
 			}
 			ret = ret + tab + tab + tab + "base.Seed(context);" + nl
+				+ tab + tab + Resources.EB + nl
+				+ tab + Resources.EB + nl;
+			ret = ret + tab + "sealed class " + tit + "MigrateDatabaseToLatestVersion : MigrateDatabaseToLatestVersion <"
+				+ tit + "DB, " + tit + "MigrationsConfigration> " + Resources.SB + nl
+				+ tab + tab + "public " + tit + "MigrateDatabaseToLatestVersion " + lp+ rp + " " + Resources.SB + nl
 				+ tab + tab + Resources.EB + nl
 				+ tab + Resources.EB + nl
 				+ Resources.EB + nl;
@@ -486,7 +496,7 @@ namespace M2E4Win
 					line = wk;
 					wk = "";
 				} else {
-					line = wk.Substring(0,index);
+					line = wk.Substring(0,index) + "\\n";
 					wk = wk.Substring(index+1);
 				}
 				for (int i = 0; i < tc; i++) {

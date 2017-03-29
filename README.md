@@ -1,5 +1,5 @@
-# M2E4Mono  
-## This project MySQL Workbench Models File to Mono4.0 .NET Entity Framework C# source code generator  
+# M2E4Win  
+## This project MySQL Workbench Models File to Microsoft.NEt 4.5 .NET Entity Framework 6.0 C# source code generator  
 
 　MySQL Workbench models ファイルを参照したモデルファーストの
 Entity Frameworkで使用する　C#　ソースコードを生成します。

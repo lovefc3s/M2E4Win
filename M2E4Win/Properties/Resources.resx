@@ -157,4 +157,7 @@
   <data name="configxml2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>configxml2.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;shift_jis</value>
   </data>
+  <data name="USING" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\USING.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;shift_jis</value>
+  </data>
 </root>
