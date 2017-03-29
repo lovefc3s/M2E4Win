@@ -3,6 +3,9 @@
 
 　MySQL Workbench models ファイルを参照したモデルファーストの
 Entity Frameworkで使用する　C#　ソースコードを生成します。
+### 依存関係(Dependencies)  
+NuGet サイトからパッケージ  
+MySql.Data.6.9.9をインストールして下さい。  
 
 + File name  
   + BookDB.mwb  
