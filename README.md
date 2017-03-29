@@ -3,10 +3,11 @@
 
 　MySQL Workbench models ファイルを参照したモデルファーストの
 Entity Frameworkで使用する　C#　ソースコードを生成します。
-### 依存関係(Dependencies)  
+## 依存関係(Dependencies)  
 NuGet サイトからパッケージ  
-MySql.Data.6.9.9をインストールして下さい。  
-
+MySql.Data.6.9.9以降をインストールして下さい。  
+.NET Entity Framework 6.0以降をインストールして下さい。  
+## 入力ファイル・使用ファイル
 + File name  
   + BookDB.mwb  
   mwb形式のサンプルファイルです。
@@ -50,10 +51,15 @@ MySql.Data.6.9.9をインストールして下さい。
 MySQLへ初回の接続が確立された後、Databaseが存在しない時はDatabaseを自動生成します。  
   
 ## 使用例
-modelsfile->"book.mwb"
+MySQL WorkBench Models file -> "book.mwb"
 ```c#  
-public main (){
+using System;
+using System.Data.Entity;
+using System.Linq;
+using book;
+static void main (){
   Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());
+  bookDB db = new bookDB();
 }
 ```
 ### 
