@@ -46,5 +46,14 @@ MySql.Data.6.9.9をインストールして下さい。
    MySQL Workbench Models 使用例です。
    簡単なautherテーブルとbookテーブルからビューを1つ含むモデルのEntityコードの生成を確認出来ます。  
 
-### MySQL WorkBench Models File について  
+## MySQL WorkBench Models File について  
 MySQLへ初回の接続が確立された後、Databaseが存在しない時はDatabaseを自動生成します。  
+  
+## 使用例
+modelsfile->"book.mwb"
+```c#  
+public main (){
+  Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());
+}
+```
+### 
