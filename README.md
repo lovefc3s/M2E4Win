@@ -3,10 +3,16 @@
 
 　MySQL Workbench models ファイルを参照したモデルファーストの
 Entity Frameworkで使用する　C#　ソースコードを生成します。
-## 依存関係(Dependencies)  
+## 依存関係、環境 (Dependencies)  
+MicroSoft VisualStudio 2015 で開発しました。
+
 NuGet サイトからパッケージ  
 MySql.Data.6.9.9以降をインストールして下さい。  
 .NET Entity Framework 6.0以降をインストールして下さい。  
+
+## M2E4Win のビルド
+zipファイルを解凍後、VisualStudio 2015でソリューションファイル(”M2E4Win.sin”)を読込みビルドして下さい。
+  
 ## 入力ファイル・使用ファイル
 + File name  
   + BookDB.mwb  
@@ -47,12 +53,12 @@ MySql.Data.6.9.9以降をインストールして下さい。
    MySQL Workbench Models 使用例です。
    簡単なautherテーブルとbookテーブルからビューを1つ含むモデルのEntityコードの生成を確認出来ます。  
 
-## MySQL WorkBench Models File について  
+## MySQL Workbench Models File について  
 MySQLへ初回の接続が確立された後、Databaseが存在しない時はDatabaseを自動生成します。  
   
 ## 使用例
-MySQL WorkBench Models file -> "book.mwb"
-```c#  
+MySQL Workbench Models file -> "book.mwb"
+``` c#  
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -65,4 +71,7 @@ static void main (){
   bookDB db = new bookDB();
 }
 ```
+  Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());　と
+  Database.SetInitializer(new NullDatabaseInitializer<bookDB>());　　は
+  どちらか一方を採用して下さい。
 ### 
