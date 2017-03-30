@@ -58,8 +58,11 @@ using System.Data.Entity;
 using System.Linq;
 using book;
 static void main (){
+  //  Database Auto Migrate
   Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());
-  ***bookDB*** db = new ***bookDB***();
+  //  Database None Migrate
+  Database.SetInitializer(new NullDatabaseInitializer<bookDB>());
+  bookDB db = new bookDB();
 }
 ```
 ### 
