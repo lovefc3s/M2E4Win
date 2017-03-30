@@ -35,12 +35,12 @@ MySql.Data.6.9.9以降をインストールして下さい。
   各項目を消去します。  
   
 + 出力ファイル（Output File）  
-  + （mwbｆｉｌｅname).ｃｓ  
+  + （mwbfilename).cs  
     mwbファイルと同じ名前でC#のソースファイル出力します。  
     プロジェクトにこの出力ファイルを追加してください。  
   + AppconfigReadme.txt  
     プロジェクトの設定ファイル"App.config" の 設定例を示します。  
-    <connectionStrings>節の中をコピー＆ペーストして使用して下さい。  
+    connectionStrings節の中をコピー＆ペーストして使用して下さい。  
   
 + 同梱ファイル（使用例 File)
   + book.mwb  
@@ -59,7 +59,7 @@ using System.Linq;
 using book;
 static void main (){
   Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());
-  bookDB db = new bookDB();
+  ***bookDB*** db = new ***bookDB***();
 }
 ```
 ### 
