@@ -71,8 +71,8 @@ static void main (){
   bookDB db = new bookDB();
 }
 ```
-  「Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());」　と  
-  「Database.SetInitializer(new NullDatabaseInitializer<bookDB>())」　　はどちらか一方を採用して下さい。  
+  ```Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());```と  
+  ```Database.SetInitializer(new NullDatabaseInitializer<bookDB>());```　はどちらか一方を採用して下さい。  
   
 ### 補足事項  
   上記の使用例で Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());を使用した場合  
