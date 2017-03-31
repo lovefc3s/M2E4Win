@@ -1,5 +1,5 @@
 # M2E4Win  
-## This project MySQL Workbench Models File to Microsoft.NEt 4.5 .NET Entity Framework 6.0 C# source code generator  
+## This project MySQL Workbench Models File to Microsoft.NEt 4.5 .NET Entity Framework 6.0 C# source code Generator  
 
 　MySQL Workbench models ファイルを参照したモデルファーストの
 Entity Frameworkで使用する　C#　ソースコードを生成します。
@@ -58,7 +58,7 @@ MySQLへ初回の接続が確立された後、Databaseが存在しない時はD
   
 ## 使用例
 MySQL Workbench Models file -> "book.mwb"
-``` c#  
+```csharp  
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -71,7 +71,9 @@ static void main (){
   bookDB db = new bookDB();
 }
 ```
-  Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());　と
-  Database.SetInitializer(new NullDatabaseInitializer<bookDB>());　　は
-  どちらか一方を採用して下さい。
-### 
+  「Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());」　と  
+  「Database.SetInitializer(new NullDatabaseInitializer<bookDB>())」　　はどちらか一方を採用して下さい。  
+  
+### 補足事項  
+  上記の使用例で Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());を使用した場合  
+ソースファイルを分割することにより、純粋なコードファーストのコードを記述してDatabase 初期化するなくテーブルの追加や変更など更新することができます。
