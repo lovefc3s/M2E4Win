@@ -62,18 +62,20 @@ MySQL Workbench Models file -> "book.mwb"
 using System;
 using System.Data.Entity;
 using System.Linq;
-using book;
-static void main (){
-  //  Database Auto Migrate
-  Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());
-  //  Database None Migrate
-  Database.SetInitializer(new NullDatabaseInitializer<bookDB>());
-  bookDB db = new bookDB();
+namespace bookcontext {
+	class Program {
+		static void Main(string[] args) {
+    //  Database Auto Migrate
+    Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());
+    //  Database None Migrate
+    Database.SetInitializer(new NullDatabaseInitializer<bookDB>());
+    bookDB db = new bookDB();
+  }
 }
 ```
   ```Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());```と  
   ```Database.SetInitializer(new NullDatabaseInitializer<bookDB>());```　はどちらか一方を採用して下さい。  
   
 ### 補足事項  
-  上記の使用例で Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());を使用した場合  
+  上記の使用例で```Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());```を使用した場合  
 ソースファイルを分割することにより、純粋なコードファーストのコードを記述してDatabase 初期化するなくテーブルの追加や変更など更新することができます。

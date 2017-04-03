@@ -206,9 +206,9 @@ namespace M2E4Win
 		//
 		//	Entity Code Generator
 		//
-		public string GetSourceCode(){
+		public string GetSourceCode() {
 			tit = Filename;
-			tit = tit.Substring(tit.LastIndexOf(Resources.DirSp)+1,tit.LastIndexOf(".")- tit.LastIndexOf(Resources.DirSp) - 1);
+			tit = tit.Substring(tit.LastIndexOf(Resources.DirSp) + 1, tit.LastIndexOf(".") - tit.LastIndexOf(Resources.DirSp) - 1);
 			string ret = Resources.Header1 + nl
 				+ Resources.Header2 + nl
 				+ Resources.Header3 + nl
@@ -227,7 +227,7 @@ namespace M2E4Win
 				+ tab + tab + "public " + tit + "DB(MySqlConnection Connection) : base(Connection.ConnectionString) {" + nl
 				+ tab + tab + tab + _init + ";" + nl
 				+ tab + tab + "}" + nl
-				+ tab + tab + "private void "+ _init + " {" + nl;
+				+ tab + tab + "private void " + _init + " {" + nl;
 			if (Routines.Count > 0) {
 				ret = ret + tab + tab + tab + tit + "Connection = new MySqlConnection();" + nl;
 			}
@@ -242,7 +242,7 @@ namespace M2E4Win
 					ret = ret + ";\";" + nl;
 				}
 				int wk1 = 0;
-				foreach (MyRoutineParam prm in rtn.Params) { 
+				foreach (MyRoutineParam prm in rtn.Params) {
 					wk1++;
 					ret = ret + tab + tab + tab + tab + "+ \"`" + prm.name + "`";
 					if (wk1 != rtn.Params.Count)
@@ -256,29 +256,29 @@ namespace M2E4Win
 					int len = prm.datatype.LastIndexOf("(");
 					if (len < 1) len = prm.datatype.Length;
 					//len--;
-					string type = prm.datatype.Substring(0,len);
+					string type = prm.datatype.Substring(0, len);
 					type = type.ToLower();
 					type = paramtype(type);
 					ret = ret + type + "));" + nl;
 				}
 			}
 			ret = ret + tab + tab + Resources.EB + nl;
-			foreach (MyTable tbl in Tables){
+			foreach (MyTable tbl in Tables) {
 				ret = ret + tab + tab + "public DbSet<" + tbl.name + "> " + tbl.name + "s " + prop + nl;
 			}
 			ret = ret + nl;
-			if(Routines.Count > 0)
+			if (Routines.Count > 0)
 				ret = ret + tab + tab + "private MySqlConnection " + tit + "Connection;" + nl;
 			foreach (MyRoutine rtn_name in Routines) {
 				ret = ret + tab + tab + "public MySqlCommand " + rtn_name.name + ";" + nl;
 			}
 			ret = ret + nl + tab + "}" + nl + nl;
-			foreach (MyTable tbl in Tables){
-
+			foreach (MyTable tbl in Tables) {
+				ret = ret + "[Table(\"" + tbl.name + "\")]" + nl;
 				ret = ret + tab + "public partial class " + tbl.name + " {" + nl;
 				MyIndexColumn icx = null;
 				MyIndex ixx = null;
-				foreach(MyColumn col in tbl.Columns){
+				foreach (MyColumn col in tbl.Columns) {
 					icx = null;
 					ixx = null;
 					foreach (MyIndex idx in Indexes) {
@@ -302,22 +302,20 @@ namespace M2E4Win
 							}
 						}
 					}
-					MyUserDatatype typ = Usertype.Find(x => x.actualType==col.SimpleDatatype);
+					MyUserDatatype typ = Usertype.Find(x => x.actualType == col.SimpleDatatype);
 					string styp = "";
 					if (typ != null) styp = cstype(typ);
 					if (styp.Length < 1) {
-						styp = col.SimpleDatatype.Substring(col.SimpleDatatype.LastIndexOf(".")+1, col.SimpleDatatype.Length - col.SimpleDatatype.LastIndexOf(".")-1);
+						styp = col.SimpleDatatype.Substring(col.SimpleDatatype.LastIndexOf(".") + 1, col.SimpleDatatype.Length - col.SimpleDatatype.LastIndexOf(".") - 1);
 						styp = cstype(styp);
 					}
 					if (styp != "string") {
-						if (col.isNotNull == 0)	{
+						if (col.isNotNull == 0) {
 							ret = ret + tab + tab + "public Nullable<" + styp + "> " + col.name + prop + nl;
-						}
-						else {
+						} else {
 							ret = ret + tab + tab + "public " + styp + " " + col.name + prop + nl;
 						}
-					}
-					else {
+					} else {
 						ret = ret + tab + tab + "public " + styp + " " + col.name + prop + nl;
 					}
 				}
@@ -330,7 +328,7 @@ namespace M2E4Win
 				+ tab + tab + tab + "base.Seed(context);" + nl;
 			foreach (MyView view in Views) {
 				ret = ret + tab + tab + tab + execute + lp + nl;
-				ret = ret + SqlFormat(view.sqlDefinition,4) + tab + tab + tab + tab + rp + sc + nl;
+				ret = ret + SqlFormat(view.sqlDefinition, 4) + tab + tab + tab + tab + rp + sc + nl;
 			}
 			foreach (MyRoutine rtn in Routines) {
 				ret = ret + tab + tab + tab + execute + lp + nl;
@@ -363,7 +361,14 @@ namespace M2E4Win
 				+ tab + tab + "public " + tit + "MigrateDatabaseToLatestVersion " + lp+ rp + " " + Resources.SB + nl
 				+ tab + tab + Resources.EB + nl
 				+ tab + Resources.EB + nl
-				+ Resources.EB + nl;
+				+ Resources.EB + nl + nl;
+			ret = ret
+				+ Resources.ComSp + tab + "example:" + tab + "Auto Migrate"+ nl
+				+ Resources.ComSp + tab + "using " + Name + ";" + nl
+				+ Resources.ComSp + tab + "static void Main(string[] args) { " + nl
+				+ Resources.ComSp + tab + tab + "Database.SetInitializer(new " + tit + "MigrateDatabaseToLatestVersion());" + nl
+				+ Resources.ComSp + tab + tab + tit + "DB db = new " + tit + "DB();" + nl
+				+ Resources.ComSp + tab + "}" + nl;
 			string savename = Filename;
 			savename = savename.Substring(0,savename.LastIndexOf(Resources.DirSp));
 			savename = savename + Resources.DirSp + tit + ".cs";
