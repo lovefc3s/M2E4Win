@@ -57,7 +57,7 @@ zipファイルを解凍後、VisualStudio 2015でソリューションファイ
 MySQLへ初回の接続が確立された後、Databaseが存在しない時はDatabaseを自動生成します。  
   
 ## 使用例
-MySQL Workbench Models file -> "book.mwb"
+MySQL Workbench Models file -> "book.mwb" の場合。
 ```csharp  
 using System;
 using System.Data.Entity;
@@ -65,13 +65,14 @@ using System.Linq;
 namespace bookcontext {
 	class Program {
 		static void Main(string[] args) {
-    //  Database Auto Migrate
-    Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());
-    //  Database None Migrate
-    Database.SetInitializer(new NullDatabaseInitializer<bookDB>());
-    bookDB db = new bookDB();
+      //  Database Auto Migrate
+      Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());
+      //  Database None Migrate
+      Database.SetInitializer(new NullDatabaseInitializer<bookDB>());
+      bookDB db = new bookDB();
+    }
   }
-}
+}  
 ```
   ```Database.SetInitializer(new bookMigrateDatabaseToLatestVersion());```と  
   ```Database.SetInitializer(new NullDatabaseInitializer<bookDB>());```　はどちらか一方を採用して下さい。  
