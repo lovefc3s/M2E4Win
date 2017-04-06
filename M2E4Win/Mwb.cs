@@ -99,6 +99,7 @@ namespace M2E4Win
 			NodeProcess1(nod,1);
 			if (_table != null)
 			{
+				_table.id = Tables.Count + 1;
 				Tables.Add(_table);
 			}
 			nod = nod.NextSibling;
@@ -274,7 +275,7 @@ namespace M2E4Win
 			}
 			ret = ret + nl + tab + "}" + nl + nl;
 			foreach (MyTable tbl in Tables) {
-				ret = ret + "[Table(\"" + tbl.name + "\")]" + nl;
+				ret = ret + tab + "[Table(\"" + tbl.name + "\")]" + nl;
 				ret = ret + tab + "public partial class " + tbl.name + " {" + nl;
 				MyIndexColumn icx = null;
 				MyIndex ixx = null;
@@ -302,6 +303,30 @@ namespace M2E4Win
 							}
 						}
 					}
+					MyUserDatatype typ = Usertype.Find(x => x.actualType == col.SimpleDatatype);
+					string styp = "";
+					if (typ != null) styp = cstype(typ);
+					if (styp.Length < 1) {
+						styp = col.SimpleDatatype.Substring(col.SimpleDatatype.LastIndexOf(".") + 1, col.SimpleDatatype.Length - col.SimpleDatatype.LastIndexOf(".") - 1);
+						styp = cstype(styp);
+					}
+					if (styp != "string") {
+						if (col.isNotNull == 0) {
+							ret = ret + tab + tab + "public Nullable<" + styp + "> " + col.name + prop + nl;
+						} else {
+							ret = ret + tab + tab + "public " + styp + " " + col.name + prop + nl;
+						}
+					} else {
+						ret = ret + tab + tab + "public " + styp + " " + col.name + prop + nl;
+					}
+				}
+				ret = ret + tab + Resources.EB + nl;
+			}
+			foreach(MyView view in Views) {
+				view.Columns.Clear();
+				SetColumns(view.Columns, view.sqlDefinition);
+				ret = ret + tab + "public partial class " + view.name + " {"+ nl;
+				foreach (MyColumn col in view.Columns) {
 					MyUserDatatype typ = Usertype.Find(x => x.actualType == col.SimpleDatatype);
 					string styp = "";
 					if (typ != null) styp = cstype(typ);
@@ -486,6 +511,92 @@ namespace M2E4Win
 			}
 			return ret;
 		}
+		/// <summary>
+		/// set Views Column 
+		/// </summary>
+		/// <param name="columns"></param>
+		/// <param name="sql"></param>
+		private void SetColumns(List<MyColumn> columns, string sql) {
+			string wk = sql;
+			wk = wk.Replace("\r\n", "\n");
+			int i = wk.IndexOf("select", 0, StringComparison.CurrentCultureIgnoreCase);
+			if (i > -1) wk = wk.Substring(i+7,wk.Length-(i+7));
+			int j = wk.IndexOf("from", 0, StringComparison.CurrentCultureIgnoreCase);
+			if (j > -1) wk = wk.Substring(0,j);
+			wk = wk.Replace("`", "");
+			string str = "";
+			int k = wk.IndexOf(",");
+			while (wk.Length > 0) {
+				k = wk.IndexOf(",");
+				if (k < 0) {
+					str = wk;
+					wk = "";
+				} else {
+					str = wk.Substring(0, k);
+					wk = wk.Substring(k + 1);
+				}
+				str = str.Replace("\n","");
+				str = str.Trim();
+				//string dbname = "";
+				string tblname = "";
+				string orgname = "";
+				string name = "";
+				int l = str.IndexOf("as", 0, StringComparison.CurrentCultureIgnoreCase);
+				int m = str.LastIndexOf(".");
+
+				if (l > -1) {
+					name = str.Substring(l + 3);
+					if (m > -1) orgname = str.Substring(m + 1, str.Length - l-3);
+					else orgname = str.Substring(0, str.Length - l-3);
+				}
+				if (name.Length < 1) name = orgname;
+				int n = str.IndexOf(".");
+				if (m > -1) {
+					if (m != n) tblname = str.Substring(n+1,m-(n+1));
+					else tblname = str.Substring(0, str.Length - n);
+				}
+				MyColumn col = new MyColumn();
+				col.id = columns.Count + 1;
+				col.name = name;
+				col.oldName = orgname;
+				findTable(tblname,ref col);
+				columns.Add(col);
+			}
+		}
+		/// <summary>
+		/// Find Table 
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="col"></param>
+		/// <returns></returns>
+		private void findTable(string name, ref MyColumn col) {
+			col.table = -1;
+			foreach (MyTable tbl in Tables) {
+				if (tbl.name == name) {
+					col.table = tbl.id;
+					foreach (MyColumn tcl in tbl.Columns) {
+						if(tcl.name == col.oldName) {
+							col.autoIncrement = tcl.autoIncrement;
+							col.characterSetName = tcl.characterSetName;
+							col.collationName = tcl.collationName;
+							col.comment = tcl.comment;
+							col.datatypeExplicitParams = tcl.datatypeExplicitParams;
+							col.defaultValue = tcl.defaultValue;
+							col.defaultValueIsNull = tcl.defaultValueIsNull;
+							col.isNotNull = tcl.isNotNull;
+							col.precision = tcl.precision;
+							col.scale = tcl.scale;
+							col.SimpleDatatype = tcl.SimpleDatatype;
+							col.tablelink = tcl.tablelink;
+							col.linkid = tcl.linkid;
+							break;
+						}
+					}
+					break;
+				}
+			}
+			return;
+		}
 		//	
 		//	SQL 文字列　整形
 		//  
@@ -523,6 +634,7 @@ namespace M2E4Win
 				{
 					if ((atr.Name == "struct-name") && (atr.Value == "db.mysql.Table")) {
 						if (_table != null) {
+							_table.id = Tables.Count + 1;
 							Tables.Add(_table);
 						}
 						_table = new MyTable();
@@ -767,6 +879,7 @@ namespace M2E4Win
 					}
 				}
 			}
+			tbl.id = Tables.Count + 1;
 			Tables.Add(tbl);
 			_table = null;
 		}
@@ -964,4 +1077,3 @@ namespace M2E4Win
 		}
 	}
 }
-
