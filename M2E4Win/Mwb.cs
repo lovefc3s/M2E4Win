@@ -427,7 +427,7 @@ namespace M2E4Win
 			case "varchar": rtn = "MySqlDbType.VarChar"; break;
 			case "short": rtn = "MySqlDbType.Int16"; break;
 			case "int": rtn = "MySqlDbType.Int32"; break;
-			case "long": rtn = "MySqlDbType.Int64"; break;
+			case "int64": rtn = "MySqlDbType.Int64"; break;
 			case "text": rtn = "MySqlDbType.Text"; break;
 			}
 			return rtn;
@@ -437,6 +437,7 @@ namespace M2E4Win
 
 			switch (type) {
 			case "int": break;
+			case "int64": ret = "Int64"; break;
 			case "string": break;
 			case "short": break;
 			case "long": break;
