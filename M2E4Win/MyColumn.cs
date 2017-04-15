@@ -13,6 +13,7 @@ namespace M2E4Win
 			table = 0;
 			autoIncrement = 0;
 			linkid = "";
+			originalFLG = true;
 		}
 		public int id { get; set; }
 		public int table  { get; set; } 
@@ -32,6 +33,7 @@ namespace M2E4Win
 		public string SimpleDatatype { get; set; }
 		public string linkid { get; set; }
 		public string tablelink { get; set; }
+		public bool originalFLG { get; set; }
 	}
 	public partial class MyTable
 	{
@@ -146,5 +148,18 @@ namespace M2E4Win
 		public int modelOnly { get; set; }
 		public string oldName { get; set; }
 		public List<MyTable> Tables { get; set; }
+	}
+	public partial class MyOperator {
+		public MyOperator() {
+			Operators = new List<string>();
+			Operators.Add("(");
+			Operators.Add(")");
+			Operators.Add("=");
+			Operators.Add("+");
+			Operators.Add(" - ");
+			Operators.Add("*");
+			Operators.Add("/");
+		}
+		public List<string> Operators { get; set; }
 	}
 }

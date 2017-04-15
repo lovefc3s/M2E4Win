@@ -515,8 +515,8 @@ namespace M2E4Win
 		/// <summary>
 		/// set Views Column 
 		/// </summary>
-		/// <param name="columns"></param>
-		/// <param name="sql"></param>
+		/// <param name="columns">List</param>
+		/// <param name="sql">Views SQL strings</param>
 		private void SetColumns(List<MyColumn> columns, string sql) {
 			string wk = sql;
 			wk = wk.Replace("\r\n", "\n");
@@ -590,6 +590,7 @@ namespace M2E4Win
 							col.SimpleDatatype = tcl.SimpleDatatype;
 							col.tablelink = tcl.tablelink;
 							col.linkid = tcl.linkid;
+							
 							break;
 						}
 					}
